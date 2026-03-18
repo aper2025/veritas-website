@@ -139,17 +139,57 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  /* ---------- Newsletter Form Handler ---------- */
+  /* ---------- Newsletter Form Handler (via Google Apps Script → Brevo) ---------- */
+  // SETUP: Replace with your deployed Google Apps Script URL for newsletter
+  var NEWSLETTER_ENDPOINT = 'YOUR_NEWSLETTER_APPS_SCRIPT_URL_HERE';
+
   document.querySelectorAll('.newsletter-form').forEach(function (form) {
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var btn = form.querySelector('button');
+      var emailInput = form.querySelector('input[type="email"]');
       var originalText = btn.textContent;
-      btn.textContent = 'Subscribed!';
-      setTimeout(function () {
-        btn.textContent = originalText;
-        form.reset();
-      }, 3000);
+
+      btn.textContent = 'Subscribing...';
+      btn.disabled = true;
+
+      // If endpoint not configured yet, show success for testing
+      if (NEWSLETTER_ENDPOINT === 'YOUR_NEWSLETTER_APPS_SCRIPT_URL_HERE') {
+        btn.textContent = 'Subscribed!';
+        btn.style.backgroundColor = '#1B3A5C';
+        setTimeout(function () {
+          btn.textContent = originalText;
+          btn.style.backgroundColor = '';
+          btn.disabled = false;
+          form.reset();
+        }, 3000);
+        return;
+      }
+
+      fetch(NEWSLETTER_ENDPOINT, {
+        method: 'POST',
+        body: JSON.stringify({ email: emailInput.value }),
+        mode: 'no-cors'
+      })
+      .then(function () {
+        btn.textContent = 'Subscribed!';
+        btn.style.backgroundColor = '#1B3A5C';
+        setTimeout(function () {
+          btn.textContent = originalText;
+          btn.style.backgroundColor = '';
+          btn.disabled = false;
+          form.reset();
+        }, 3000);
+      })
+      .catch(function () {
+        btn.textContent = 'Error — Try Again';
+        btn.style.backgroundColor = '#cc0000';
+        setTimeout(function () {
+          btn.textContent = originalText;
+          btn.style.backgroundColor = '';
+          btn.disabled = false;
+        }, 3000);
+      });
     });
   });
 
