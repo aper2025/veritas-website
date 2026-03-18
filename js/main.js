@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   /* ---------- Newsletter Form Handler (via Google Apps Script → Brevo) ---------- */
   // SETUP: Replace with your deployed Google Apps Script URL for newsletter
-  var NEWSLETTER_ENDPOINT = 'https://script.google.com/macros/s/AKfycbz-IKPhGMWEgFsXvswmgwCsqynn9zWv0WbZ23xIojIeHeWMF84L6yljH7PMZZ40B1dH/exec';
+  var NEWSLETTER_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxYLIgDDKBy-61NcB2jFgfqo27mxqMNgMopX3vM7-uVUlkBxdgzRgUD0vfiBWuZqqV0BQ/exec';
 
   document.querySelectorAll('.newsletter-form').forEach(function (form) {
     form.addEventListener('submit', function (e) {
