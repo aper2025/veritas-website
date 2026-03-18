@@ -166,11 +166,11 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
       }
 
-      fetch(NEWSLETTER_ENDPOINT, {
-        method: 'POST',
-        body: JSON.stringify({ email: emailInput.value }),
-        mode: 'no-cors'
+      fetch(NEWSLETTER_ENDPOINT + '?email=' + encodeURIComponent(emailInput.value), {
+        method: 'GET',
+        mode: 'cors'
       })
+      .then(function (response) { return response.json(); })
       .then(function () {
         btn.textContent = 'Subscribed!';
         btn.style.backgroundColor = '#1B3A5C';
